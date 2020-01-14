@@ -623,7 +623,10 @@ class HelpFormatter(object):
         if params.get('choices') is not None:
             choices_str = ', '.join([str(c) for c in params['choices']])
             params['choices'] = choices_str
-        return self._get_help_string(action) % params
+        try:
+            return self._get_help_string(action) % params
+        except ValueError as e:
+            raise ValueError(f'Invalid help string syntax in help string "{self._get_help_string(action)}": {e}')
 
     def _iter_indented_subactions(self, action):
         try:
